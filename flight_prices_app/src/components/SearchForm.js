@@ -3,7 +3,7 @@ import { useState } from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Feather } from '@expo/vector-icons';
 
-export default function SearchForm() {
+export default function SearchForm({onSearch}) {
     const [from,setFrom] = useState('');
     const [to,setTo] = useState('');
     const [departDate,setDepartDate] = useState(new Date());
@@ -14,7 +14,7 @@ export default function SearchForm() {
     const [returnDate, setReturnDate] = useState(new Date());
 
     const onSearchPress = () =>{
-        console.warn('Searching for: ',from)
+        onSearch({from,to,departDate,returnDate});
     }
 
     const onChangeDepart = (event, selectedDate) => {
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     },
     input:{
         borderWidth:1,
-        borderColor:'gainsboro',
+        borderColor:'darkblue',
         padding:10,
         marginVertical:5,
         borderRadius:5,
@@ -136,12 +136,12 @@ const styles = StyleSheet.create({
 
     search:{
         marginVertical:20,
-        color:'red',
+        color:'lime',
     },
 
     datePicker:{
         borderWidth:1,
-        borderColor:'red',
+        borderColor:'darkblue',
         padding:5,
         marginVertical:10,
         borderRadius:5,
