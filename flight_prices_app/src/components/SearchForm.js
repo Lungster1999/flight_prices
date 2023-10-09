@@ -1,22 +1,96 @@
-import { Text,View,StyleSheet,TextInput, Button } from "react-native";
+import { Text,View,StyleSheet,TextInput, Button,SafeAreaView } from "react-native";
 import { useState } from 'react';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { Feather } from '@expo/vector-icons';
 
 export default function SearchForm() {
     const [from,setFrom] = useState('');
     const [to,setTo] = useState('');
+    const [departDate,setDepartDate] = useState(new Date());
+    const [returntDate,setReturntDate] = useState(new Date());
+    const [show, setShow] = useState(false);
+    const [mode, setMode] = useState('date');
+    const [date, setDate] = useState(new Date());
+    const [returnDate, setReturnDate] = useState(new Date());
 
     const onSearchPress = () =>{
-        console.warn('Searching for: ',setFrom)
+        console.warn('Searching for: ',from)
     }
+
+    const onChangeDepart = (event, selectedDate) => {
+        const currentDate = selectedDate;
+        setShow(false);
+        setDepartDate(currentDate);
+      };
+      const onChangeReturn = (event, selectedDate) => {
+        const currentDate = selectedDate;
+        setShow(false);
+        setReturntDate(currentDate);
+      };
+
+      const onChange = (event, selectedDate) => {
+        const currentDate = selectedDate;
+        setShow(false);
+        setDate(currentDate);
+      };
+
+      const showMode = (currentMode) => {
+        setShow(true);
+        setMode(currentMode);
+      };
+
+      const showModeReturn = (currentModeReturn) => {
+        setShow(true);
+        setMode(currentModeReturn);
+      };
+    
+      const showDatepicker = () => {
+        showMode('date');
+      };
+
+      const showDatepickerReturn = () => {
+        showModeReturn('date');
+      };
 
 
     return (
         <View style = {styles.card}>
             <Text style={styles.title}>Search the best prices</Text>
-            <TextInput value={setFrom} placeholder="From" style={styles.input}/>
-            <TextInput value={setTo} placeholder="To" style={styles.input}/>
+            <TextInput 
+                value={from}
+                onChangeText={setFrom} 
+                placeholder="From" 
+                style={styles.input}
+                />
+            <TextInput 
+                value={to} 
+                onChangeText={setTo}
+                placeholder="To" 
+                style={styles.input}
+                />
+           
+            
+           <View style={styles.datePicker}>
+                <Feather name="calendar" size={26} style={{marginRight:10}}/>
+                <Button style={styles.dateButton} onPress={showDatepicker} title= {departDate.toLocaleDateString()} />
+                {show && (
+                    <DateTimePicker
+                    minimumDate={new Date()}
+                    value={departDate}
+                    mode={mode}
+                    onChange={onChangeDepart}
+                    />
+                
+                )}
 
-            <Button title="Search" onPress={onSearchPress}/>
+                <Text style={{fontSize:30,color:'red',marginLeft:10,marginRight:10}}> | </Text>
+
+                <Button style={styles.dateButton} onPress={showDatepicker} title= {departDate.toLocaleDateString()} />
+               
+        </View>
+
+
+            <Button title="Search" onPress={onSearchPress} style={styles.search}/>
         </View>
         
     
@@ -53,6 +127,28 @@ const styles = StyleSheet.create({
         padding:10,
         marginVertical:5,
         borderRadius:5,
-    }
+    },
 
+    dateButton:{
+        backgroundColor:'gray',
+        borderRadius:20,
+    },
+
+    search:{
+        marginVertical:20,
+        color:'red',
+    },
+
+    datePicker:{
+        borderWidth:1,
+        borderColor:'red',
+        padding:5,
+        marginVertical:10,
+        borderRadius:5,
+        flexDirection:'row',
+        color:'black',
+        alignContent:"center",
+        alignItems:'center',
+        marginLeft:10,
+    },
 });
